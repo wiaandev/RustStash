@@ -1,4 +1,4 @@
-import {App} from './@Company/ProjectName/App';
+import {App} from './@RustStash/RustStash/App';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 
