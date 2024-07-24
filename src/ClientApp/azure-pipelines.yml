@@ -1,0 +1,98 @@
+trigger:
+  - main
+    
+pr:
+  - main
+
+pool:
+  name: 'Stackworx'
+
+resources:
+  repositories:
+    - repository: templates
+      name: BuildTemplates/templates
+      type: git
+
+variables:
+  - group: ci
+  - name: clientAppDir
+    value: $(Build.SourcesDirectory)/src/ClientApp
+  
+stages:
+  - stage: Format
+    jobs:
+      - job: Dprint
+        steps:
+          - template: dprint-format.yml@templates
+            parameters:
+              npmToken: $(GITLAB_NPM_TOKEN)
+              nodeVersion: '20.x'
+
+  - stage: Build
+    dependsOn:
+      - Format
+    jobs:
+      - job: Frontend
+        steps:
+          - template: vite.yml@templates
+            parameters:
+              clientAppDir: $(clientAppDir)
+              npmToken: $(GITLAB_NPM_TOKEN)
+              nodeVersion: '20.x'
+              caching: false
+              legacyPeerDeps: true
+
+      - job: Backend
+        steps:
+          - template: dotnet-build.yml@templates
+            parameters:
+              caching: false
+              cachePath: ${{ variables.NUGET_PACKAGES }}
+              buildArguments: --configuration Release --warnaserror
+
+  - stage: Test
+    dependsOn:
+      - Build
+    jobs:
+    - job: IntegrationTests
+      displayName: Integration Tests
+      steps:
+        - bash: 'echo TODO'
+
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    - stage: Package
+      dependsOn:
+        - Test
+      jobs:
+      - job: Publish
+        steps:
+          - template: dotnet-publish.yml@templates
+            parameters:
+              clientAppDir: $(clientAppDir)
+              projects: src/Project.Web
+              runtimeIdentifiers: [ win-x86 ]
+
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    - stage: DeployDEV
+      dependsOn:
+        - Package
+      displayName: Deploy DEV
+      jobs:
+      - deployment: Deploy
+        environment: DEV
+        strategy:
+          runOnce: 
+            deploy:
+              steps:
+                - task: DownloadPipelineArtifact@2
+                  inputs:
+                    artifactName: 'webapp'
+                    targetPath: $(Build.SourcesDirectory)/src/Project.Web/bin/Release/net8.0
+                - task: AzureWebApp@1
+                  displayName: Deploy App
+                  inputs:
+                    azureSubscription: 'Project-devops-deploy'
+                    appType: 'webApp'
+                    appName: 'app-project-dev'
+                    package: '$(Build.SourcesDirectory)/src/Project.Web/bin/Release/net8.0/win-x86/publish'
+                    DeploymentType: 'zipDeploy'

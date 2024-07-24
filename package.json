@@ -1,0 +1,14 @@
+{
+  "name": "RustStash",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "dprint": "^0.41.0"
+  },
+  "scripts": {
+    "fmt": "dprint fmt",
+    "check": "dprint check",
+    "pipeline": "npm run check && (cd src/ClientApp; npm run lint && npm run typecheck && npm run build) && dotnet build --configuration Release",
+    "update": "cd src/ClientApp; npm run update-schema; npm run relay",
+    "setup-hooks": "touch .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit && echo \"npm run check && (cd src/ClientApp; npm run lint && npm run typecheck;)\" > .git/hooks/pre-commit"
+  }
+}

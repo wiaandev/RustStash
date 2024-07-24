@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Placed here so that interfaces can use noda time types -->
+        <PackageReference Include="NodaTime"/>
+    </ItemGroup>
+</Project>

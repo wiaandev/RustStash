@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Core", "src\RustStash.Core\RustStash.Core.csproj", "{521B59B5-0776-48AB-8554-580E204F7B57}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Test.Unit", "tests\RustStash.Test.Unit\RustStash.Test.Unit.csproj", "{E7427AD0-5869-43E9-9084-114FBC698712}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Web", "src\RustStash.Web\RustStash.Web.csproj", "{6E29AE79-ECCB-4358-B42A-AA535EFE785C}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Test.Integration", "tests\RustStash.Test.Integration\RustStash.Test.Integration.csproj", "{E9E67436-D42C-4BA0-8F0D-0A70E17109D4}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Test.GraphQL", "tests\RustStash.Test.GraphQL\RustStash.Test.GraphQL.csproj", "{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Abstractions", "src\RustStash.Abstractions\RustStash.Abstractions.csproj", "{E0D7F890-17C8-4CC9-8855-1B51408C8810}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7616DC6E-1FA5-4656-A9EB-ABD0EB2A0D98}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+		stylecop.json = stylecop.json
+		docker-compose.yaml = docker-compose.yaml
+		stylecop.ruleset = stylecop.ruleset
+		.gitlab-ci.yml = .gitlab-ci.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{623460DB-F15E-447A-928A-5948B0221C44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8A8868E5-C2C6-4F5B-9DB1-836BCBB62B2D}"
+EndProject
+Project("{AA880777-E12C-48D7-9DB9-52FA3DC130EE}") = "RustStash.Functions", "src\RustStash.Functions\RustStash.Functions.csproj", "{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{521B59B5-0776-48AB-8554-580E204F7B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521B59B5-0776-48AB-8554-580E204F7B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521B59B5-0776-48AB-8554-580E204F7B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521B59B5-0776-48AB-8554-580E204F7B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C06A0A95-6D3F-4506-BDD9-1E47B2110A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C06A0A95-6D3F-4506-BDD9-1E47B2110A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C06A0A95-6D3F-4506-BDD9-1E47B2110A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C06A0A95-6D3F-4506-BDD9-1E47B2110A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7427AD0-5869-43E9-9084-114FBC698712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7427AD0-5869-43E9-9084-114FBC698712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7427AD0-5869-43E9-9084-114FBC698712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7427AD0-5869-43E9-9084-114FBC698712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E29AE79-ECCB-4358-B42A-AA535EFE785C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E29AE79-ECCB-4358-B42A-AA535EFE785C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E29AE79-ECCB-4358-B42A-AA535EFE785C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E29AE79-ECCB-4358-B42A-AA535EFE785C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E403C4B-D42F-46A9-ADF2-1B1075EAF736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E403C4B-D42F-46A9-ADF2-1B1075EAF736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E403C4B-D42F-46A9-ADF2-1B1075EAF736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E403C4B-D42F-46A9-ADF2-1B1075EAF736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E67436-D42C-4BA0-8F0D-0A70E17109D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E67436-D42C-4BA0-8F0D-0A70E17109D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E67436-D42C-4BA0-8F0D-0A70E17109D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E67436-D42C-4BA0-8F0D-0A70E17109D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D7F890-17C8-4CC9-8855-1B51408C8810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D7F890-17C8-4CC9-8855-1B51408C8810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D7F890-17C8-4CC9-8855-1B51408C8810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D7F890-17C8-4CC9-8855-1B51408C8810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0D7F890-17C8-4CC9-8855-1B51408C8810} = {623460DB-F15E-447A-928A-5948B0221C44}
+		{521B59B5-0776-48AB-8554-580E204F7B57} = {623460DB-F15E-447A-928A-5948B0221C44}
+		{E74C4290-6C2B-4C91-8399-FACFFF5DEBB1} = {8A8868E5-C2C6-4F5B-9DB1-836BCBB62B2D}
+		{E9E67436-D42C-4BA0-8F0D-0A70E17109D4} = {8A8868E5-C2C6-4F5B-9DB1-836BCBB62B2D}
+		{E7427AD0-5869-43E9-9084-114FBC698712} = {8A8868E5-C2C6-4F5B-9DB1-836BCBB62B2D}
+		{6E29AE79-ECCB-4358-B42A-AA535EFE785C} = {623460DB-F15E-447A-928A-5948B0221C44}
+		{BC7DEE5A-7EEA-400C-A77C-E61CE8A08252} = {623460DB-F15E-447A-928A-5948B0221C44}
+	EndGlobalSection
+EndGlobal

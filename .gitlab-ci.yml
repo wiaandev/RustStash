@@ -1,0 +1,92 @@
+include:
+  - project: "stackworx.io/gitlab/ci-templates"
+    file: "/Base.gitlab-ci.v1.yml"
+
+variables:
+  EF_CORE_VERSION: 7.0.2
+
+stages:
+  - build
+  - package
+  - image
+  - deploy
+
+.build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  only:
+    - merge_requests
+    - main
+    - tags
+
+build:dotnet:
+  extends: .build
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  variables:
+    SA_PASSWORD: Strong_!_Password
+    ACCEPT_EULA: "Y"
+    NUGET_PACKAGES: "$CI_PROJECT_DIR/.nuget/packages"
+  cache:
+    paths:
+      - .nuget/packages
+  services:
+    - name: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+      alias: mssql
+  before_script:
+    - export PATH="$PATH:/root/.dotnet/tools"
+    - dotnet tool restore
+    - pushd . && cd src/ClientApp && echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc && popd
+  script:
+    - ./scripts/ci.sh
+
+build:web:
+  extends: .build
+  image: node:18-buster
+  artifacts:
+    paths:
+      - src/ClientApp/dist
+  cache:
+    key:
+      files:
+        - src/ClientApp/package-lock.json
+    paths:
+      - src/ClientApp/node_modules
+  script:
+    - cd src/ClientApp
+    - echo -e "@stackworx.io:registry=https://gitlab.com/api/v4/packages/npm/ \n//gitlab.com/api/v4/packages/npm/:_authToken=${GITLAB_NPM_TOKEN} \nalways-auth=true" >> .npmrc
+    - npm ci
+    - export VITE_VERSION=$(git rev-parse --short HEAD)
+    - make --jobs --output-sync=recurse
+
+package:
+  stage: package
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  needs:
+    - job: build:dotnet
+      artifacts: true
+    - job: build:web
+      artifacts: true
+  only:
+    - main
+    - tags
+  tags:
+    - docker
+    - linode
+  script:
+    - dotnet restore
+    - dotnet publish --configuration=Release --runtime linux-x64 ./src/RustStash.Web
+  artifacts:
+    paths:
+      - src/RustStash.Web/bin/Release/net8.0/linux-x64
+
+image:server:
+  extends: .image
+  needs:
+    - package
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "tags"'
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --tag $CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE/server:$CI_COMMIT_REF_NAME ./src/RustStash.Web
+    - docker push $CI_REGISTRY_IMAGE/server:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA
