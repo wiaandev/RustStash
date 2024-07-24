@@ -7,8 +7,8 @@ export default defaultConfig({
   resolve: {
     alias: [
       {
-        find: '@BookAPharmacy',
-        replacement: path.resolve(__dirname, 'src', '@BookAPharmacy'),
+        find: '@RustStash',
+        replacement: path.resolve(__dirname, 'src', '@RustStash'),
       },
       {
         find: /^@mui\/icons-material\/(.*)/,
