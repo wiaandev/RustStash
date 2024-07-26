@@ -1,8 +1,16 @@
 namespace RustStash.Web.Extensions;
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using RustStash.Core;
 using RustStash.Core.Entities.Auth;
 
@@ -13,19 +21,70 @@ public static class EndpointRouteBuilderExtensions
     public static IEndpointRouteBuilder MapAccountEndpoints(
         this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet(
-            "profile",
-            (HttpContext httpContext) =>
-        {
-            var user = httpContext.User;
 
-            if (user.Identity?.IsAuthenticated != true)
+        endpoints.MapPost("/login", async Task<Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>>
+            ([FromBody] LoginRequest login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies, ISessionContext sessionContext, [FromServices] IServiceProvider sp) =>
+        {
+            using var disposable = sessionContext.DangerouslyAssumeSystemParty();
+
+            var userManager = sp.GetRequiredService<UserManager<User>>();
+
+            var user = await userManager.FindByEmailAsync(login.Email);
+
+            Console.WriteLine(user.Email);
+
+            if (user == null)
             {
-                return Results.Unauthorized();
+                return TypedResults.Problem("Invalid email or password", statusCode: StatusCodes.Status401Unauthorized);
             }
 
-            return Results.Content(string.Empty);
-        }).RequireAuthorization();
+            var signInManager = sp.GetRequiredService<SignInManager<User>>();
+
+            var useCookieScheme = (useCookies == true) || (useSessionCookies == true);
+            var isPersistent = (useCookies == true) && (useSessionCookies != true);
+            signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
+
+            var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent, lockoutOnFailure: true);
+            Console.WriteLine("RESULT" + result);
+
+            if (result.RequiresTwoFactor)
+            {
+                if (!string.IsNullOrEmpty(login.TwoFactorCode))
+                {
+                    result = await signInManager.TwoFactorAuthenticatorSignInAsync(login.TwoFactorCode, isPersistent, rememberClient: isPersistent);
+                }
+                else if (!string.IsNullOrEmpty(login.TwoFactorRecoveryCode))
+                {
+                    result = await signInManager.TwoFactorRecoveryCodeSignInAsync(login.TwoFactorRecoveryCode);
+                }
+            }
+
+            if (!result.Succeeded)
+            {
+                return TypedResults.Problem(result.ToString(), statusCode: StatusCodes.Status401Unauthorized);
+            }
+
+            // The signInManager already produced the needed response in the form of a cookie or bearer token.
+            return TypedResults.Empty;
+        });
+
+        endpoints.MapGet("profile", async (ClaimsPrincipal claimsPrincipal, IServiceProvider serviceProvider) =>
+       {
+           var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+           var signInManager = serviceProvider.GetRequiredService<SignInManager<User>>();
+
+           if (claimsPrincipal.Identity?.IsAuthenticated != true)
+           {
+               throw new Exception("User not authenticated");
+           }
+
+           var userInfo = await userManager.GetUserAsync(claimsPrincipal) ?? throw new Exception("User not found");
+
+           await signInManager.RefreshSignInAsync(userInfo);
+
+           return new ActionResult<ProfileResponse>(new ProfileResponse(userInfo.Email!, userInfo.FirstName + " " + userInfo.LastName));
+       }).RequireAuthorization();
+
 
         // Todo: Use /api/account/signup for manual user registration. Build-in Identity API /register function is not compatible with our EF setup. (PartyId, FirstName, LastName)
         endpoints.MapPost("signup", async ([FromBody] RegisterRequest registerRequest, [FromServices] IServiceProvider serviceProvider, ISessionContext sessionContext) =>
@@ -69,4 +128,8 @@ public static class EndpointRouteBuilderExtensions
         string LastName,
         string Email,
         string Password);
+
+    private record ProfileResponse(
+string Email,
+string FullName);
 }

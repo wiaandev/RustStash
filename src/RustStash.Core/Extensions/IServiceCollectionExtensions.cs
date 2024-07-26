@@ -18,12 +18,12 @@ public static class IServiceCollectionExtensions
         services.AddPooledDbContextFactory<AppDbContext>(
             options =>
             {
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString("RustStashDatabase"),
                     b => b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
                 options.EnableDetailedErrors();
                 // TODO: only dev or testing
-                // options.EnableSensitiveDataLogging();
+                options.EnableSensitiveDataLogging();
             });
 
         // For Legacy services
@@ -36,6 +36,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddSingleton<UserService>();
         services.AddSingleton<SeedService>();
+        services.AddScoped<BasesService>();
 
         return services;
     }

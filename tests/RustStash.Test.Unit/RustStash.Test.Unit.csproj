@@ -10,4 +10,9 @@
       <ProjectReference Include="..\..\src\RustStash.Web\RustStash.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Npgsql" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    </ItemGroup>
+
 </Project>

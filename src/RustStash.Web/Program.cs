@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using RustStash.Core;
 using RustStash.Core.Entities.Auth;
 using RustStash.Core.Extensions;
@@ -23,7 +24,7 @@ builder.Services.AddCoreServices();
 builder.Services.AddAuth();
 builder.Services.AddSingleton<ISessionContext, HttpSessionContext>();
 builder.Services.AddGraph();
-builder.WebHost.AddSentry();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -42,13 +43,27 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapGroup("/api/account")
-    .MapIdentityApi<User>();
-
-app.MapGroup("/api/account")
     .MapAccountEndpoints();
 
 app.MapGraphQL();
+app.MapHealthChecks("/healthz");
 app.MapFallbackToFile("index.html");
+
+// Add middleware to log schema initialization errors
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = 500;
+        var response = new { error = ex.Message };
+        await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+    }
+});
 
 app.Run();
 

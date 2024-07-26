@@ -8,7 +8,7 @@ export default function RootLayout() {
   return (
     <Grid minHeight={'100vh'} bgcolor={theme.palette.background.default}>
       <Header />
-      <Grid container xs wrap='nowrap' flex='1 1 auto' direction='column' p={4}>
+      <Grid container xs wrap='nowrap' flex='1 1 auto' direction='column' p={5}>
         <Outlet />
       </Grid>
     </Grid>

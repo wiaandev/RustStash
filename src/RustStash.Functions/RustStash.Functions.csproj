@@ -18,6 +18,8 @@
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
+        <PackageReference Include="Npgsql" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Sentry" />
         <!-- https://github.com/Azure/azure-functions-durable-extension/issues/2446#issuecomment-1517203490 -->
 <!--        <PackageReference Include="Contrib.Grpc.Core.M1" />-->

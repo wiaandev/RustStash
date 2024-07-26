@@ -1,3 +1,5 @@
+using RustStash.Core.Entities.Base;
+
 namespace RustStash.Core;
 
 using System;
@@ -20,38 +22,38 @@ public class AppDbContext : IdentityDbContext<
     RoleClaim,
     UserToken>
 {
-    public AppDbContext(
-        DbContextOptions options)
+    public AppDbContext(DbContextOptions options)
         : base(options)
     {
         this.SavingChanges += (_, args) =>
         {
             var sessionContext = this.GetService<ISessionContext>();
             var addedEntities = this.ChangeTracker.Entries()
-                .Where(e => e is { State: EntityState.Added, Entity: IBaseEntity })
+                .Where(e => e.Entity is IBaseEntity && e.State == EntityState.Added)
                 .ToList();
 
             addedEntities.ForEach(e =>
             {
-                e.Property("CreatedAt").CurrentValue = DateTime.Now;
+                e.Property("CreatedAt").CurrentValue = DateTime.UtcNow; // Use UTC now
                 e.Property("CreatedByPartyId").CurrentValue = sessionContext.PartyId;
             });
 
             var editedEntities = this.ChangeTracker.Entries()
-                .Where(e => e is { State: EntityState.Modified, Entity: IBaseEntity })
+                .Where(e => e.Entity is IBaseEntity && e.State == EntityState.Modified)
                 .ToList();
 
             editedEntities.ForEach(e =>
             {
-                // Fields cannot be updated
                 e.Property("CreatedAt").IsModified = false;
                 e.Property("CreatedByPartyId").IsModified = false;
 
-                e.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                e.Property("UpdatedAt").CurrentValue = DateTime.UtcNow; // Use UTC now
                 e.Property("UpdatedByPartyId").CurrentValue = sessionContext.PartyId;
             });
         };
     }
+
+    public DbSet<Base> Bases => this.Set<Base>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
@@ -63,8 +65,8 @@ public class AppDbContext : IdentityDbContext<
     {
         builder.HasDefaultSchema(Schema.Core);
 
-        // Midnight South Africa 2023
-        var timestamp = new DateTime(2023, 1, 1, 2, 0, 0, DateTimeKind.Utc);
+        // Midnight South Africa 2023, but converted to UTC
+        var timestamp = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc); // Correct UTC timestamp
 
         base.OnModelCreating(builder);
         builder.RemovePluralizingTableNameConvention();
@@ -90,5 +92,6 @@ public class AppDbContext : IdentityDbContext<
         builder.Entity<UserRole>().ToTable(nameof(UserRole), Schema.Auth);
         builder.Entity<UserToken>().ToTable(nameof(UserToken), Schema.Auth);
         builder.Entity<UserLogin>().ToTable(nameof(UserLogin), Schema.Auth);
+        builder.Entity<Base>().ToTable(nameof(Base), Schema.Core);
     }
 }

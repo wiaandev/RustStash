@@ -10,17 +10,17 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#e63900',
+      main: '#CD412B',
     },
     secondary: {
-      main: '#f6bba4',
+      main: '#708C45',
     },
     text: {
-      primary: '#ffebcb',
+      primary: '#FBECEA',
     },
     background: {
-      default: '#272320',
-      paper: '#3c3731',
+      default: '#333333',
+      paper: '#242424',
     },
   },
   typography: {
@@ -37,7 +37,7 @@ const theme = createTheme({
     },
     MuiTypography: {
       defaultProps: {
-        color: '#ffebcb',
+        color: '#FFF3F0',
       },
     },
     MuiButton: {

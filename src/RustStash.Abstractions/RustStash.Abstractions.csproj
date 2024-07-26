@@ -7,5 +7,7 @@
     <ItemGroup>
         <!-- Placed here so that interfaces can use noda time types -->
         <PackageReference Include="NodaTime"/>
+        <PackageReference Include="Npgsql" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     </ItemGroup>
 </Project>

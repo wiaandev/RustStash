@@ -13,14 +13,12 @@ using RustStash.Core.Entities.Auth;
 [QueryType]
 public class Query
 {
-    [UseDbContext(typeof(AppDbContext))]
     public async Task<User> GetMe(AppDbContext dbContext, [Service] ISessionContext sessionContext)
     {
         var user = await dbContext.Users.FirstOrDefaultAsync(user => user.PartyId == sessionContext.PartyId);
         return user!;
     }
 
-    [UseDbContext(typeof(AppDbContext))]
     [UsePaging]
     [Authorize]
     public IOrderedQueryable<User> Users(

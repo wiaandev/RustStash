@@ -67,27 +67,24 @@ const YourComponent = () => {
           spacing={2}
           p={4}
           columnGap={2}
-          gap={10}
-          rowGap={10}
         >
           <Form {...form} onSubmit={onSubmit}>
             <Grid xs gap={10}>
-              <Typography variant='body1' color={theme.palette.text.primary}>
-                Username
-              </Typography>
-              <TextField control={form.control} fieldName='username' />
+              <TextField
+                control={form.control}
+                fieldName='username'
+                label='Username'
+              />
             </Grid>
 
             <Grid xs>
-              <Typography variant='body1' color={theme.palette.text.primary}>
-                Email
-              </Typography>
-              <TextField control={form.control} fieldName='email' />
+              <TextField
+                control={form.control}
+                fieldName='email'
+                label='Email'
+              />
             </Grid>
             <Grid xs>
-              <Typography variant='body1' color={theme.palette.text.primary}>
-                Date Of Birth
-              </Typography>
               <Controller
                 control={form.control}
                 name='dateOfBirth'
@@ -100,6 +97,7 @@ const YourComponent = () => {
                       onChange={(date) => {
                         onChange(date);
                       }}
+                      label='Date of Birth'
                     />
                   );
                 }}
@@ -119,16 +117,18 @@ const YourComponent = () => {
             </Grid>
             <Grid xs container columnGap={2}>
               <Grid xs>
-                <Typography variant='body1' color={theme.palette.text.primary}>
-                  Password
-                </Typography>
-                <TextField control={form.control} fieldName='password' />
+                <TextField
+                  control={form.control}
+                  fieldName='password'
+                  label='Password'
+                />
               </Grid>
               <Grid xs>
-                <Typography variant='body1' color={theme.palette.text.primary}>
-                  Confirm Password
-                </Typography>
-                <TextField control={form.control} fieldName='confirmPassword' />
+                <TextField
+                  control={form.control}
+                  fieldName='confirmPassword'
+                  label='Confirm Password'
+                />
               </Grid>
             </Grid>
             <Grid>

@@ -7,6 +7,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFnsV3';
 import {RelayEnvironmentProvider} from 'react-relay';
 import {enGB} from 'date-fns/locale';
+import {AuthContextController} from './Context/AuthContext';
 
 export function App() {
   const environment = useRelayEnv();
@@ -16,7 +17,9 @@ export function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Suspense fallback={<CircularProgress />}>
-            <CustomRouterProvider relayEnv={environment} />
+            <AuthContextController>
+              <CustomRouterProvider relayEnv={environment} />
+            </AuthContextController>
           </Suspense>
         </ThemeProvider>
       </LocalizationProvider>
