@@ -75,8 +75,10 @@ public static class WebApplicationExtension
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<RustStash.Core.Entities.Auth.User>>();
             var basesService = scope.ServiceProvider
                 .GetRequiredService<BasesService>();
+            var inventoryService = scope.ServiceProvider
+                .GetRequiredService<InventoryService>();
 
-            await seedService.Seed(dbContext, passwordHasher, userManager, roleManager, basesService);
+            await seedService.Seed(dbContext, passwordHasher, userManager, roleManager, basesService, inventoryService);
         }
     }
 }

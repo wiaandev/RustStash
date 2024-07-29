@@ -4,7 +4,7 @@ import Loading from '../Components/Loading';
 interface AuthContextType {
   authenticated: boolean;
   roles: Role[];
-  me: {email: string; fullName: string} | null;
+  me: {email: string; fullName: string; id: string} | null;
   handleLogin(): void;
   handleLogout(): void;
 }

@@ -37,6 +37,7 @@ public static class IServiceCollectionExtensions
         services.AddSingleton<UserService>();
         services.AddSingleton<SeedService>();
         services.AddScoped<BasesService>();
+        services.AddScoped<InventoryService>();
 
         return services;
     }

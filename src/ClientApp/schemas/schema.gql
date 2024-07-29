@@ -23,6 +23,14 @@ type CreateUserPayload {
 """The `DateTime` scalar represents an ISO-8601 compliant date time type."""
 scalar DateTime
 
+type Inventory {
+  id: ID!
+  itemImage: String!
+  itemName: String!
+  quantity: Int!
+  userId: ID!
+}
+
 """
 LocalDate is an immutable struct representing a date within the calendar, with no reference to a particular time zone or time of day.
 """
@@ -89,6 +97,7 @@ type Query {
     """The list of node IDs."""
     ids: [ID!]!
   ): [Node]!
+  userInventory(userId: String!): [Inventory!]!
   users(
     """Returns the elements in the list that come after the specified cursor."""
     after: String

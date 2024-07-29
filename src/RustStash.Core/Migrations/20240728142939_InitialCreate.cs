@@ -34,6 +34,23 @@ namespace RustStash.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventory",
+                schema: "core",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemName = table.Column<string>(type: "text", nullable: false),
+                    ItemImage = table.Column<string>(type: "text", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Party",
                 schema: "auth",
                 columns: table => new
@@ -423,6 +440,10 @@ namespace RustStash.Core.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Base",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "Inventory",
                 schema: "core");
 
             migrationBuilder.DropTable(

@@ -368,6 +368,34 @@ namespace RustStash.Core.Migrations
                     b.ToTable("Base", "core");
                 });
 
+            modelBuilder.Entity("RustStash.Core.Entities.Inventory.Inventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ItemImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Inventory", "core");
+                });
+
             modelBuilder.Entity("RustStash.Core.Entities.Auth.Party", b =>
                 {
                     b.HasOne("RustStash.Core.Entities.Auth.Party", "CreatedByParty")

@@ -12,7 +12,7 @@ using RustStash.Core;
 namespace RustStash.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240726130637_InitialCreate")]
+    [Migration("20240728142939_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -369,6 +369,34 @@ namespace RustStash.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Base", "core");
+                });
+
+            modelBuilder.Entity("RustStash.Core.Entities.Inventory.Inventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ItemImage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Inventory", "core");
                 });
 
             modelBuilder.Entity("RustStash.Core.Entities.Auth.Party", b =>

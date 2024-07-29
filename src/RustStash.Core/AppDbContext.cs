@@ -1,4 +1,5 @@
 using RustStash.Core.Entities.Base;
+using RustStash.Core.Entities.Inventory;
 
 namespace RustStash.Core;
 
@@ -54,6 +55,8 @@ public class AppDbContext : IdentityDbContext<
     }
 
     public DbSet<Base> Bases => this.Set<Base>();
+
+    public DbSet<Inventory> Inventories => this.Set<Inventory>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
