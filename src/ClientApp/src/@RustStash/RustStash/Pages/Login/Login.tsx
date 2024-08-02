@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   if (authenticated) {
-    return <Navigate to='/home' />;
+    return <Navigate to='/welcome' />;
   }
 
   return (

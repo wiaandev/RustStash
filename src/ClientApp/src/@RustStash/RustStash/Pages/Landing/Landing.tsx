@@ -24,11 +24,11 @@ export default function Landing() {
         >
           <Grid>
             <Typography variant='h1' fontWeight={'bold'}>
-              Visualise your Rust inventory
+              Visualise your Rust Stash
             </Typography>
           </Grid>
           <Typography variant='caption' color={theme.palette.text.primary}>
-            With Rust Stash, take control of your inventory
+            Take control of your inventory
           </Typography>
           {!me && (
             <>

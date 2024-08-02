@@ -12,7 +12,10 @@ import Landing from './Pages/Landing/Landing';
 import {IEnvironment} from 'relay-runtime';
 import Login from './Pages/Login/Login';
 import {AuthContext} from './Context/AuthContext';
-import InventoryPage from './Pages/Inventory/InventoryPage';
+import {UserLayout} from './Layouts/UserLayout';
+import DashboardPage from './Pages/Dashboard/Dashboard';
+import Craft from './Pages/Craft/Craft';
+import Map from './Pages/Map/Map';
 
 interface Props {
   relayEnv: IEnvironment;
@@ -22,7 +25,8 @@ const router = (_relayEnv: IEnvironment) => {
   return createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path='home' element={<Landing />} />
+        <Route index element={<Navigate to={'welcome'} replace />} />
+        <Route path='welcome' element={<Landing />} />
         <Route
           element={
             <AuthBlocker>
@@ -30,7 +34,18 @@ const router = (_relayEnv: IEnvironment) => {
             </AuthBlocker>
           }
         >
-          <Route path='inventory' element={<InventoryPage />} />
+        </Route>
+        <Route
+          element={
+            <AuthBlocker>
+              <UserLayout />
+            </AuthBlocker>
+          }
+        >
+          <Route index element={<Navigate to='dashboard' replace />} />
+          <Route path='dashboard' element={<DashboardPage />} />
+          <Route path='craft' element={<Craft />} />
+          <Route path='map' element={<Map />} />
         </Route>
         <Route path='register' element={<Register />} />
         <Route path='login' element={<Login />} />

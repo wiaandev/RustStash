@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<361ed4e6f7c341a5d4b9d871f09d42f0>>
+ * @generated SignedSource<<8f086eb3147b508f661050c50eae968a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,13 +9,10 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type InventoryPageQuery$variables = {
+export type DashboardQuery$variables = {
   userId: string;
 };
-export type InventoryPageQuery$data = {
-  readonly me: {
-    readonly id: string;
-  };
+export type DashboardQuery$data = {
   readonly userInventory: ReadonlyArray<{
     readonly id: string;
     readonly itemImage: string;
@@ -23,9 +20,9 @@ export type InventoryPageQuery$data = {
     readonly quantity: number;
   }>;
 };
-export type InventoryPageQuery = {
-  response: InventoryPageQuery$data;
-  variables: InventoryPageQuery$variables;
+export type DashboardQuery = {
+  response: DashboardQuery$data;
+  variables: DashboardQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -36,14 +33,7 @@ var v0 = [
     "name": "userId"
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v2 = [
+v1 = [
   {
     "alias": null,
     "args": [
@@ -65,7 +55,13 @@ v2 = [
         "name": "itemName",
         "storageKey": null
       },
-      (v1/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -82,18 +78,6 @@ v2 = [
       }
     ],
     "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "User",
-    "kind": "LinkedField",
-    "name": "me",
-    "plural": false,
-    "selections": [
-      (v1/*: any*/)
-    ],
-    "storageKey": null
   }
 ];
 return {
@@ -101,8 +85,8 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "InventoryPageQuery",
-    "selections": (v2/*: any*/),
+    "name": "DashboardQuery",
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -110,20 +94,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "InventoryPageQuery",
-    "selections": (v2/*: any*/)
+    "name": "DashboardQuery",
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "bd8c945be619c81808abd2358a10382b",
+    "cacheID": "19efbfea9d8281a0245baf90fd6ddf0c",
     "id": null,
     "metadata": {},
-    "name": "InventoryPageQuery",
+    "name": "DashboardQuery",
     "operationKind": "query",
-    "text": "query InventoryPageQuery(\n  $userId: String!\n) {\n  userInventory(userId: $userId) {\n    itemName\n    id\n    itemImage\n    quantity\n  }\n  me {\n    id\n  }\n}\n"
+    "text": "query DashboardQuery(\n  $userId: String!\n) {\n  userInventory(userId: $userId) {\n    itemName\n    id\n    itemImage\n    quantity\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d4a2152b446fa8e12278949d928b5fe1";
+(node as any).hash = "da5d80729054be4d02006dc36f0a92c8";
 
 export default node;

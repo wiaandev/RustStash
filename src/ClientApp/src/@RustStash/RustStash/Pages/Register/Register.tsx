@@ -9,6 +9,7 @@ import Logo from '@RustStash/RustStash/assets/register-image.jpg';
 import {DatePicker} from '@mui/x-date-pickers';
 import Form from '@RustStash/RustStash/Components/Form';
 import TextField from '@RustStash/RustStash/Components/TextField';
+import {useNavigate} from 'react-router';
 
 // Define the Yup validation schema
 const registerFormSchema = yup.object().shape({
@@ -36,6 +37,7 @@ const registerFormSchema = yup.object().shape({
 type FormValues = yup.InferType<typeof registerFormSchema>;
 
 const YourComponent = () => {
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: yupResolver(registerFormSchema),
   });
@@ -61,13 +63,7 @@ const YourComponent = () => {
             Create Account
           </Typography>
         </Grid>
-        <Grid
-          container
-          direction={'column'}
-          spacing={2}
-          p={4}
-          columnGap={2}
-        >
+        <Grid container direction={'column'} spacing={2} p={4} columnGap={2}>
           <Form {...form} onSubmit={onSubmit}>
             <Grid xs gap={10}>
               <TextField
@@ -131,10 +127,17 @@ const YourComponent = () => {
                 />
               </Grid>
             </Grid>
-            <Grid>
-              <Button type='submit' variant='contained'>
-                Create Account
-              </Button>
+            <Grid xs container rowGap={2}>
+              <Grid>
+                <Button type='submit' variant='contained'>
+                  Create Account
+                </Button>
+              </Grid>
+              <Grid>
+                <Button onClick={() => navigate('/login')} variant='outlined'>
+                  Login
+                </Button>
+              </Grid>
             </Grid>
           </Form>
         </Grid>
